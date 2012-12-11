@@ -30,6 +30,7 @@ module Mailercity
   def self.request(path, params)
     raise AuthenticationError.new('No API key provided.  (HINT: set your API key using "Mailercity.api_key = <API-KEY>".') unless api_key
     response = Faraday.post(api_url(path), params, "X-Api-Key" => Mailercity.api_key)
+    # TODO: CATCH ALL EXCEPTIONS (like URI::InvalidURIError) AND RAISE MY OWN ERROR
   end
 
   def self.const_missing(const_name)

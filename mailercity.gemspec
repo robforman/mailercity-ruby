@@ -6,7 +6,7 @@ Gem::Specification.new do |gem|
   gem.email         = ["rob@robforman.com"]
   gem.description   = %q{Ruby bindings for Mailercity API}
   gem.summary       = %q{Mailercity is a central email repository and sending service.}
-  gem.homepage      = ""
+  gem.homepage      = "https://github.com/robforman/mailercity"
 
   gem.add_dependency('faraday')
   gem.add_development_dependency('rake')
