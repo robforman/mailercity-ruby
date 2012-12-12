@@ -56,7 +56,7 @@ module Mailercity
 
     def deliver
       response = Mailercity.request("/#{mailer_name}/#{template}", params)
-      response.status == 200
+      response.status == 201
     end
 
     private

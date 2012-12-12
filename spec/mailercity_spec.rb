@@ -6,7 +6,7 @@ Mailercity.api_key = "testkey"
 
 describe Mailercity do
   def stub_post(url, params, options={})
-    status = options.fetch(:status, 200)
+    status = options.fetch(:status, 201)
     api_key = options.fetch(:api_key, Mailercity.api_key)
     stub_request(:post, url).with(:body => params, :headers => {'X-Api-Key' => api_key}).to_return(:status => status, :body => "", :headers => {})
   end
