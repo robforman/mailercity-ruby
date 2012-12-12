@@ -1,4 +1,4 @@
-# Mailercity
+# Mailercity Ruby
 
 Ruby bindings for Mailercity API
 
@@ -16,16 +16,24 @@ Or install it yourself as:
 
     $ gem install mailercity
 
+## Setup API Key
+
+Set your api key in `config/initializers/mailercity.rb`
+
+```ruby
+Mailercity.api_key = "xxxxxxxxxxxxxxxxxxxxxxx"
+```
+
 ## Usage
 
 Use this:
 ```ruby
-Mailercity::UserMailer.welcome_email(:user_email => "rob@robforman.com").deliver
+Mailercity::UserMailer.welcome_email("rob@robforman.com").deliver
 ```
 
 In order to send to the below mail in Mailercity:
 ```ruby
-UserMailer.welcome_email(:user_email => "rob@robforman.com").deliver
+UserMailer.welcome_email("rob@robforman.com").deliver
 ```
 
 ## Contributing
