@@ -1,4 +1,5 @@
 require "faraday"
+require "json"
 require "mailercity/helper"
 require "mailercity/version"
 require 'mailercity/errors/authentication_error'
@@ -27,16 +28,20 @@ module Mailercity
     @@api_key
   end
 
-  def self.request(path, params)
+  def self.request(path, args)
     raise AuthenticationError.new('No API key provided.  (HINT: set your API key using "Mailercity.api_key = <API-KEY>".') unless api_key
-    response = Faraday.post(api_url(path), params, "X-Api-Key" => Mailercity.api_key)
-    # TODO: CATCH ALL EXCEPTIONS (like URI::InvalidURIError) AND RAISE MY OWN ERROR
+    payload = {:args => args}
+    response = Faraday.post(api_url(path)) do |req|
+      req.headers['Content-Type'] = 'application/json'
+      req.headers['X-Api-Key'] = Mailercity.api_key
+      req.body = ::JSON.dump(payload)
+    end
   end
 
   def self.const_missing(const_name)
     new_class = Class.new(super_class=Message)
 
-    # Non-obvious: we assign it to a const in order to name.
+    # Non-obvious: we assign it in order to name it.
     const_set(const_name, new_class)
   end
 
@@ -61,7 +66,7 @@ module Mailercity
 
     private
 
-    def self.method_missing(method_name, args, &block)
+    def self.method_missing(method_name, *args, &block)
       new(template: method_name, params: args)
     end
   end
