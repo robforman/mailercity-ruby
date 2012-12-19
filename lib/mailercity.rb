@@ -7,6 +7,7 @@ require 'mailercity/errors/authentication_error'
 module Mailercity
   @@api_base = 'https://mailercity.onthecity.org'
   @@api_key = nil
+  @@perform_deliveries = true
 
   def self.api_base=(api_base)
      @@api_base = api_base
@@ -27,6 +28,15 @@ module Mailercity
   def self.api_key
     @@api_key
   end
+
+  def self.perform_deliveries=(perform_deliveries)
+    @@perform_deliveries = perform_deliveries
+  end
+
+  def self.perform_deliveries
+    @@perform_deliveries
+  end
+
 
   def self.request(path, args)
     raise AuthenticationError.new('No API key provided.  (HINT: set your API key using "Mailercity.api_key = <API-KEY>".') unless api_key
@@ -60,6 +70,8 @@ module Mailercity
     end
 
     def deliver
+      return true if Mailercity.perform_deliveries == false
+
       response = Mailercity.request("/#{mailer_name}/#{template}", params)
       response.status == 201
     end

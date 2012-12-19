@@ -29,7 +29,7 @@ describe Mailercity do
         Mailercity::MyTestMailer.my_test_template(user).deliver.should == true
       end
 
-      it "should post multiple values in order" do
+      it "should send values in order" do
         stub = stub_post("http://testhost/my_test_mailer/my_test_template", 201, user, account)
         Mailercity::MyTestMailer.my_test_template(user, account).deliver.should == true
       end
@@ -39,6 +39,13 @@ describe Mailercity do
       it "should fail to post and return false" do
         stub = stub_post("http://testhost/my_test_mailer/my_test_template", 403, user)
         Mailercity::MyTestMailer.my_test_template(user).deliver.should == false
+      end
+    end
+
+    context "with deliveries disabled" do
+      it "should not even try to send a request but just return true" do
+        Mailercity.perform_deliveries = false
+        Mailercity::MyTestMailer.my_test_template(user).deliver.should == true
       end
     end
   end
