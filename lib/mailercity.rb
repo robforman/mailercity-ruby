@@ -44,7 +44,7 @@ module Mailercity
     response = Faraday.post(api_url(path)) do |req|
       req.headers['Content-Type'] = 'application/json'
       req.headers['X-Api-Key'] = Mailercity.api_key
-      req.body = ::JSON.dump(payload)
+      req.body = payload.to_json
     end
   end
 

@@ -7,7 +7,7 @@ Mailercity.api_key = "testkey"
 describe Mailercity do
   def stub_post(url, status, *args)
     payload = {:args => args}
-    body = JSON.dump(payload)
+    body = payload.to_json
     api_key = Mailercity.api_key
     stub_request(:post, url).
       with(:body => body, :headers => {'X-Api-Key' => api_key, 'Content-Type' => 'application/json'}).
@@ -16,6 +16,10 @@ describe Mailercity do
 
   let(:user) { {"id"=>1, "email"=>"rob@robforman.com", "first_name"=>"Rob", "last_name"=>"Forman"} }
   let(:account) { {"id"=>1, "name"=>"Awesometown"} }
+
+  before(:each) do
+    Mailercity.perform_deliveries = true
+  end
 
   it "can create dynamic mailer classes and template methods while passing appropriate parameters" do
     mail = Mailercity::MyTestMailer.my_test_template(user)
